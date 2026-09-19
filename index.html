@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ReadQuest - Unlocking Knowledge</title>
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<div class="app">
+<aside class="sidebar">
+  <div class="logo">📚 ReadQuest<small>Unlocking Knowledge</small></div>
+  <nav class="nav">
+    <button class="active" onclick="showScreen('dashboard',this)"><span>🏠</span> Home</button>
+    <button onclick="showScreen('activities',this)"><span>📖</span> Reading Activities</button>
+    <button onclick="showScreen('adaptive',this)"><span>🧠</span> Adaptive Learning</button>
+    <button onclick="showScreen('rewards',this)"><span>🏆</span> Rewards</button>
+    <button onclick="showScreen('teacher',this)"><span>👩‍🏫</span> Teacher / Parent</button>
+    <button onclick="showScreen('features',this)"><span>⚙️</span> Key Features</button>
+    <button onclick="logout()"><span>🚪</span> Logout</button>
+  </nav>
+</aside>
+
+<main class="main">
+
+<!-- LOGIN -->
+<section id="login" class="screen">
+  <div class="center">
+    <div class="card login">
+      <div class="mascot">👦📚👧</div>
+      <div class="logo">ReadQuest</div>
+      <p class="subtitle">An adaptive, gamified reading platform for Grade 3 pupils.</p>
+      <input id="username" placeholder="Username">
+      <input id="password" type="password" placeholder="Password">
+      <button class="primary" style="width:100%" onclick="login()">Login</button>
+      <p><button class="secondary" onclick="demoLogin()">Use Demo Account</button></p>
+      <small>Demo only — no real account is required.</small>
+    </div>
+  </div>
+</section>
+
+<!-- DASHBOARD -->
+<section id="dashboard" class="screen active">
+  <div class="topbar">
+    <div><div class="title">Welcome back! 👋</div><div class="subtitle">Keep Reading. You're Doing Great!</div></div>
+    <button class="secondary" onclick="showToast('Profile opened')">👦 Melvs ▾</button>
+  </div>
+  <div class="stats">
+    <div class="stat">⭐ XP <b id="xp">450</b></div>
+    <div class="stat">🔥 Daily Streak <b>7 days</b></div>
+    <div class="stat">📚 Level <b id="level">4</b></div>
+    <div class="stat">🏆 Rank <b>#12</b></div>
+  </div>
+  <div class="grid">
+    <div class="card feature">
+      <div><div class="icon">🔤</div><h2>Word Recognition</h2><p>Practice recognizing words quickly.</p></div>
+      <button class="primary" onclick="startActivity('Word Recognition')">Start Activity</button>
+    </div>
+    <div class="card feature">
+      <div><div class="icon">🧩</div><h2>Sentence Construction</h2><p>Arrange words into meaningful sentences.</p></div>
+      <button class="primary" onclick="startActivity('Sentence Construction')">Start Activity</button>
+    </div>
+    <div class="card feature">
+      <div><div class="icon">📖</div><h2>Reading Comprehension</h2><p>Read a passage and answer questions.</p></div>
+      <button class="primary" onclick="showScreen('activities')">Read Now</button>
+    </div>
+  </div>
+</section>
+
+<!-- ACTIVITIES -->
+<section id="activities" class="screen">
+  <div class="topbar"><div><div class="title">Reading Activity</div><div class="subtitle">Choose an activity and earn XP.</div></div></div>
+  <div class="card reading-box">
+    <div style="display:flex;justify-content:space-between"><b>Question 2 / 5</b><b>⭐ <span id="activityXp">450</span> XP</b></div>
+    <div class="progress" style="margin:12px 0 22px"><span id="progress"></span></div>
+    <div class="story">
+      <h2>My Little Dog</h2>
+      <p>Mark has a little dog named Max. Max loves running around the yard and playing with a ball. Every afternoon, Mark gives Max fresh water and takes him outside.</p>
+      <p>Click a highlighted word to see its meaning.</p>
+      <p>Max loves <span class="word" onclick="unpackWord('running')">running</span> around the yard.</p>
+    </div>
+    <div class="question">
+      <h3>1. What is the name of Mark's dog?</h3>
+      <div class="options">
+        <button class="option" onclick="answer(this,false)">A. Snow</button>
+        <button class="option" onclick="answer(this,true)">B. Max</button>
+        <button class="option" onclick="answer(this,false)">C. Alex</button>
+        <button class="option" onclick="answer(this,false)">D. Brownie</button>
+      </div>
+      <br>
+      <button class="primary" onclick="nextQuestion()">Next →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ADAPTIVE -->
+<section id="adaptive" class="screen">
+  <div class="topbar"><div><div class="title">Adaptive Difficulty</div><div class="subtitle">The activity level responds to learner performance.</div></div></div>
+  <div class="card">
+    <div class="performance">
+      <div class="metric"><h3>Great job! 🎉</h3><p>Your recent performance is improving.</p><button class="primary" onclick="continueAdaptive()">Continue</button></div>
+      <div class="metric"><h3>Your Performance</h3><p>Accuracy: <b>80%</b></p><p>Avg. Time: <b>42 sec</b></p><p>Errors: <b>0</b></p></div>
+    </div>
+    <hr style="border:0;border-top:1px solid #e5edf5;margin:25px 0">
+    <h3>Next Activity</h3>
+    <p id="adaptiveText">Your next activity will use a Moderate reading level.</p>
+    <button class="secondary" onclick="changeDifficulty()">Change Difficulty</button>
+  </div>
+</section>
+
+<!-- REWARDS -->
+<section id="rewards" class="screen">
+  <div class="topbar"><div><div class="title">Reward / Gamification</div><div class="subtitle">Celebrate your reading progress!</div></div></div>
+  <div class="card" style="text-align:center">
+    <div style="font-size:80px">🏅</div>
+    <h2>You Earned a Badge!</h2>
+    <p>You completed a reading activity.</p>
+    <div class="badge-list" style="justify-content:center">
+      <div class="badge">🏅<br><b>Reading Star</b></div>
+      <div class="badge">⭐<br><b>100 XP</b></div>
+      <div class="badge">🔥<br><b>7 Day Streak</b></div>
+    </div>
+    <br>
+    <button class="primary" onclick="claimReward()">Claim Reward</button>
+  </div>
+</section>
+
+<!-- TEACHER -->
+<section id="teacher" class="screen">
+  <div class="topbar"><div><div class="title">Teacher / Parent Dashboard</div><div class="subtitle">Monitor learner progress.</div></div></div>
+  <div class="stats">
+    <div class="stat">👥 Learners <b>24</b></div>
+    <div class="stat">📈 Avg. Score <b>82%</b></div>
+    <div class="stat">⏱ Reading Time <b>42m</b></div>
+    <div class="stat">🎯 Activities <b>86%</b></div>
+  </div>
+  <div class="card">
+    <h2>Class Progress</h2>
+    <table>
+      <tr><th>Learner</th><th>Reading</th><th>Vocabulary</th><th>Status</th></tr>
+      <tr><td>Alex</td><td>88%</td><td>82%</td><td>🟢 On Track</td></tr>
+      <tr><td>Jamie</td><td>72%</td><td>68%</td><td>🟡 Needs Practice</td></tr>
+      <tr><td>Sam</td><td>94%</td><td>91%</td><td>🟢 On Track</td></tr>
+      <tr><td>Casey</td><td>61%</td><td>58%</td><td>🔴 Needs Support</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- FEATURES -->
+<section id="features" class="screen">
+  <div class="topbar"><div><div class="title">Key Features & Design</div><div class="subtitle">Prototype feature overview.</div></div></div>
+  <div class="grid">
+    <div class="card feature"><div class="icon">🔤</div><h3>Word Recognition Games</h3><p>Interactive word practice.</p></div>
+    <div class="card feature"><div class="icon">🧩</div><h3>Sentence Construction</h3><p>Build correct sentences.</p></div>
+    <div class="card feature"><div class="icon">🎯</div><h3>Adaptive Difficulty</h3><p>Adjusts based on performance.</p></div>
+    <div class="card feature"><div class="icon">🏆</div><h3>Rewards & Gamification</h3><p>XP, badges, levels and streaks.</p></div>
+    <div class="card feature"><div class="icon">📊</div><h3>Progress Tracking</h3><p>Track learner performance.</p></div>
+    <div class="card feature"><div class="icon">👩‍🏫</div><h3>Teacher & Parent Dashboard</h3><p>View class and learner progress.</p></div>
+  </div>
+  <br>
+  <div class="card">
+    <h2>System Flow / Logical Flow</h2>
+    <div class="flow">
+      <div class="box">Start</div><div class="arrow">→</div>
+      <div class="box">Login / User Profile</div><div class="arrow">→</div>
+      <div class="box">Select Activity</div><div class="arrow">→</div>
+      <div class="box">Performance</div><div class="arrow">→</div>
+      <div class="box">Adaptive Difficulty</div><div class="arrow">→</div>
+      <div class="box">Reward / Progress</div><div class="arrow">→</div>
+      <div class="box">Next Activity</div>
+    </div>
+  </div>
+</section>
+
+</main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
